@@ -22,7 +22,7 @@ class Scraper {
   }
 
   async getRaw(){
-    return this.response;
+    return this.response.text();
   }
 }
 

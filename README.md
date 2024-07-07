@@ -4,7 +4,7 @@ Web Scraper makes it effortless to scrape websites. You provide a URL and CSS se
 
 [Website →](https://web.scraper.workers.dev)
 
-[![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/adamschwartz/web.scraper.workers.dev)
+[![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/Manuel-Materazzo/web.scraper.workers.dev)
 
 ## Examples
 

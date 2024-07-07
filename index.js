@@ -1,5 +1,3 @@
-import html from './html.js'
-import contentTypes from './content-types.js'
 import Scraper from './scraper.js'
 import { generateJSONResponse, generateErrorJSONResponse } from './json-response.js'
 
@@ -13,31 +11,18 @@ async function handleRequest(request) {
   let url = searchParams.get('url')
   if (url && !url.match(/^[a-zA-Z]+:\/\//)) url = 'http://' + url
 
-  const selector = searchParams.get('selector')
-  const attr = searchParams.get('attr')
-  const spaced = searchParams.get('spaced') // Adds spaces between tags
+  const apikey = searchParams.get('apikey')
+
+  if(apikey !== API_KEY){
+    generateErrorJSONResponse("incorrect api key", false)
+  }
+
   const pretty = searchParams.get('pretty')
 
-  if (!url || !selector) {
-    return handleSiteRequest(request)
-  }
-
-  return handleAPIRequest({ url, selector, attr, spaced, pretty })
+  return handleAPIRequest({ url, pretty })
 }
 
-async function handleSiteRequest(request) {
-  const url = new URL(request.url)
-
-  if (url.pathname === '/' || url.pathname === '') {
-    return new Response(html, {
-      headers: { 'content-type': contentTypes.html }
-    })
-  }
-
-  return new Response('Not found', { status: 404 })
-}
-
-async function handleAPIRequest({ url, selector, attr, spaced, pretty }) {
+async function handleAPIRequest({ url, pretty }) {
   let scraper, result
 
   try {
@@ -47,12 +32,7 @@ async function handleAPIRequest({ url, selector, attr, spaced, pretty }) {
   }
 
   try {
-    if (!attr) {
-      result = await scraper.querySelector(selector).getText({ spaced })
-    } else {
-      result = await scraper.querySelector(selector).getAttribute(attr)
-    }
-
+    result = await scraper.getRaw()
   } catch (error) {
     return generateErrorJSONResponse(error, pretty)
   }
